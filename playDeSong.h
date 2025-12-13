@@ -9,6 +9,7 @@ struct record {
     string judul;
     string artis;
     string album;
+    int year;
     int durasi;
     bool fav;
 };
@@ -21,6 +22,12 @@ struct infoPlaylist {
 typedef struct elementSinger *adrSinger;
 typedef struct elementSong *adrSong;
 typedef struct elementPlaylist *adrPlaylist;
+typedef record infotype;
+
+struct stackH {
+    infotype info[100];
+    int top;
+};
 
 struct elementSinger {
     string namaArtis;
@@ -57,7 +64,7 @@ struct daftarPlaylist {
 void createNewLibrary(listLibrary &library);
 void createNewPlaylist(daftarPlaylist &playlists);
 adrSinger createElementSinger(string nama);
-adrSong createElementSong(string idLagu, string judul, string artis, string album, int durasi, bool fav);
+adrSong createElementSong(string idLagu, string judul, string artis, string album, int year, int durasi, bool fav);
 adrPlaylist createElementPlaylist(string kodePL, string namaPlaylist);
 bool isEmptyLibrary(listLibrary library);
 bool isEmptyPlaylist(daftarPlaylist playlists);
@@ -70,6 +77,13 @@ adrSinger searchSinger(listLibrary library, string namaArtis);
 adrSong searchSong(listLibrary library, string judul);
 void displayAllSongfromASinger(adrSinger s);
 void displayAllSongfromAPlaylist(adrPlaylist pl);
+void deleteSongsfromAll(listLibrary &library, daftarPlaylist &playlists, string judul);
+void updateSongsfromAll(listLibrary &library, daftarPlaylist &playlists);
+void deletePlaylist(daftarPlaylist &playlists, string kodePL);
+void sortSongsinLibrarybyYear(listLibrary &library);
+void sortSongsinPlaylistbyYear(daftarPlaylist &playlists);
+void mainMenuAdmin();
+void menuUser();
 
 
 #endif // PLAYDESONG_H_INCLUDED
