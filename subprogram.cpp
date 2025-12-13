@@ -195,6 +195,216 @@ void displayAllSongfromAPlaylist(adrPlaylist pl){
     }
 }
 
-void deleteSongsfromAll(listLibrary &library, daftarPlaylist &playlists, string judul){
+void displayLibrary(listLibrary library){
+    if (!isEmptyLibrary(library)){
+        adrSinger s = library.first;
+        while (s != nullptr){
+            displayAllSongfromASinger(s);
+            cout << endl;
+            s = s->next;
+        }
+    } else {
+        cout << "No singer recorded in library." << endl;
+    }
+}
 
+void displayPlaylist(daftarPlaylist playlists){
+    if (!isEmptyPlaylist(playlists)){
+        adrPlaylist pl = playlists.first;
+        while (pl != nullptr){
+            displayAllSongfromAPlaylist(pl);
+            cout << endl;
+            pl = pl->next;
+        }
+    } else {
+        cout << "You don't have any playlist. Let's make one!" << endl;
+    }
+}
+
+void deleteSongsfromAll(listLibrary &library, daftarPlaylist &playlists, string judul, string namaArtis){
+    adrSinger s = searchSinger(library, namaArtis);
+    if (s == nullptr){
+        cout << "Artis tidak ditemukan." << endl;
+    } else {
+        adrSong sg = s->firstSong;
+        bool found = false;
+        while (!found){
+            if (sg->info.judul == judul){
+                found = true;
+            }
+            sg = sg->next;
+        }
+
+        if (!found){
+            cout << "Lagu tidak ditemukan." << endl;
+        } else {
+            string iDsong = sg->info.idLagu;
+            adrPlaylist pl = playlists.first;
+            while (pl != nullptr){
+                adrSong spl = pl->firstSong;
+                while (spl != nullptr){
+                    adrSong temp = spl->next;
+                    if (spl->info.idLagu == iDsong){
+                        deleteSongElement(pl, spl);
+                    }
+                    spl = temp;
+                }
+                pl = pl->next;
+            }
+            deleteSongLibrary(s, sg);
+            cout << "Lagu " << judul << " berhasil dihapus dari Library dan seluruh Playlist." << endl;
+        }
+    }
+}
+
+void deleteSongElement(adrPlaylist &pl, adrSong spl){
+    adrSong first = pl->firstSong;
+    adrSong last = pl->lastSong;
+    if (spl == first){
+        first = first->next;
+        first->prev = nullptr;
+    } else if (spl == last){
+        last = last->prev;
+        last->next = nullptr;
+    } else if (spl == first && spl == last){
+        first = nullptr;
+        last = nullptr;
+    } else {
+        spl->prev->next = spl->next;
+        spl->next->prev = spl->prev;
+    }
+}
+
+void deleteSongLibrary(adrSinger &s, adrSong sg){
+    adrSong first = s->firstSong;
+    adrSong last = s->lastSong;
+    if (sg == first){
+        first = first->next;
+        first->prev = nullptr;
+    } else if (sg == last){
+        last = last->prev;
+        last->next = nullptr;
+    } else if (sg == first && sg == last){
+        first = nullptr;
+        last = nullptr;
+    } else {
+        sg->prev->next = sg->next;
+        sg->next->prev = sg->prev;
+    }
+}
+
+void deletePlaylist(daftarPlaylist &playlists, string kodePL){
+    adrPlaylist foundPL = searchPlaylist(playlists, kodePL);
+    if (foundPL == nullptr){
+        cout << "Playlist not found." << endl;
+    } else {
+        while (foundPL->firstSong !=nullptr){
+            adrSong spl = foundPL->firstSong;
+            deleteSongElement(foundPL, spl);
+        }
+        if (foundPL == playlists.first && foundPL == playlists.last){
+            playlists.first = nullptr;
+            playlists.last = nullptr;
+        } else if (foundPL == playlists.first){
+            playlists.first = foundPL->next;
+            playlists.first->prev = nullptr;
+        } else if (foundPL == playlists.last){
+            playlists.last = foundPL->prev;
+            playlists.last->next = nullptr;
+        } else {
+            foundPL->prev->next = foundPL->next;
+            foundPL->next->prev = foundPL->prev;
+        }
+        cout << "Playlist " << foundPL->info.namaPlaylist << " has been deleted." << endl;
+    }
+}
+
+void createStackH(stackH &history){
+    history.top = -1;
+}
+
+void push(stackH &history, adrSong sg){
+    if (history.top < 100){
+        history.top = history.top + 1;
+        history.info[history.top] = sg;
+    } else {
+        cout << "Your history is full. Aren't you listening too much songs?" << endl;
+    }
+}
+
+void showHistory(stackH history){
+    int i;
+    cout << "========== History ==========" << endl;
+    if (history.top == -1){
+        cout << "You haven't listened to any songs." << endl;
+    } else {
+        for (i = history.top; i > -1; i--){
+            if (history.info[i] != nullptr){
+                cout << "- " << history.info[i]->info.judul << " by " << history.info[i]->info.artis <<  endl;
+            }
+        }
+    }
+}
+
+void listeningTime(stackH history){
+    int total = 0;
+    int i, minutes, secs;
+    for (i = history.top; i > -1; i--){
+        if (history.info[i] != nullptr){
+            total = total + history.info[i]->info.durasi;
+        }
+    }
+
+    minutes = total / 60;
+    secs = total % 60;
+
+    cout << "You listened to songs for " << minutes << " minutes and " << secs << " seconds." << endl;
+}
+
+void playSong(stackH &history, adrSong sg){
+    if (sg != nullptr){
+        cout << sg->info.judul << " by " << sg->info.artis << " is playing." << endl;
+        cout << "Duration: " << sg->info.durasi << " detik." << endl;
+        push(history, sg);
+    }
+}
+
+void stopSong(){
+    cout << "The song is stopped." << endl;
+}
+
+adrSinger findSingerbyElemSong(listLibrary library, adrSong sg){
+    adrSinger s;
+    adrSinger temp = library.first;
+    adrSong tempSg;
+
+    while (temp != nullptr){
+        tempSg = s->firstSong;
+        while (tempSg != nullptr){
+            if (tempSg == sg){
+                return s;
+            }
+            tempSg = tempSg->next;
+        }
+        temp = temp->next
+    }
+    return nullptr;
+}
+
+void nextSong(adrSong &sg, adrSinger s, adrPlaylist pl){
+    if (pl != nullptr){
+        if (sg->next != nullptr){
+            sg = sg->next;
+        } else {
+            cout << "The first song in the playlist will be played." << endl;
+            sg = pl->firstSong;
+        }
+    } else if (s != nullptr){
+        if (sg->next != nullptr){
+            sg = sg->next;
+        } else {
+            sg = s->firstSong;
+        }
+    }
+    cout << "Next song: " << sg->info.judul << " by " << sg->info.artis << endl;
 }
