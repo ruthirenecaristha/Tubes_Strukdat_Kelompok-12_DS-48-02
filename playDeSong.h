@@ -22,10 +22,9 @@ struct infoPlaylist {
 typedef struct elementSinger *adrSinger;
 typedef struct elementSong *adrSong;
 typedef struct elementPlaylist *adrPlaylist;
-typedef record infotype;
 
 struct stackH {
-    infotype info[100];
+    adrSong info[100];
     int top;
 };
 
@@ -63,27 +62,51 @@ struct daftarPlaylist {
 
 void createNewLibrary(listLibrary &library);
 void createNewPlaylist(daftarPlaylist &playlists);
+
 adrSinger createElementSinger(string nama);
 adrSong createElementSong(string idLagu, string judul, string artis, string album, int year, int durasi, bool fav);
 adrPlaylist createElementPlaylist(string kodePL, string namaPlaylist);
+
 bool isEmptyLibrary(listLibrary library);
 bool isEmptyPlaylist(daftarPlaylist playlists);
+
 void addSingertoLibrary(listLibrary &library, adrSinger s);
 void addSongtoSinger(adrSinger &s, adrSong sg);
 void addSongtoPlaylist(adrPlaylist &pl, adrSong sg);
 void addPlaylist(daftarPlaylist &playlist, adrPlaylist pl);
+
 adrPlaylist searchPlaylist(daftarPlaylist playlists, string kodePL);
 adrSinger searchSinger(listLibrary library, string namaArtis);
 adrSong searchSong(listLibrary library, string judul);
+adrSinger findSingerbyElemSong(listLibrary library, adrSong sg);
+
 void displayAllSongfromASinger(adrSinger s);
 void displayAllSongfromAPlaylist(adrPlaylist pl);
-void deleteSongsfromAll(listLibrary &library, daftarPlaylist &playlists, string judul);
+void displayLibrary(listLibrary library);
+void displayPlaylist(daftarPlaylist playlists);
+
+void deleteSongsfromAll(listLibrary &library, daftarPlaylist &playlists, string judul, string namaArtis);
 void updateSongsfromAll(listLibrary &library, daftarPlaylist &playlists);
 void deletePlaylist(daftarPlaylist &playlists, string kodePL);
+void deleteSongElement(adrPlaylist &pl, adrSong spl);
+void deleteSongLibrary(adrSinger &s, adrSong sg);
+
 void sortSongsinLibrarybyYear(listLibrary &library);
 void sortSongsinPlaylistbyYear(daftarPlaylist &playlists);
+
 void mainMenuAdmin();
 void menuUser();
+
+void createStackH(stackH &history);
+void push(stackH &history, adrSong sg);
+void pop(stackH &history, adrSong sg);
+void showHistory(stackH history);
+void listeningTime(stackH history);
+
+void playSong(stackH &history, adrSong sg);
+void stopSong();
+void nextSong(adrSong &sg, adrSinger s, adrPlaylist pl);
+void prevSong(adrSong &sg, adrSinger s, adrPlaylist pl);
 
 
 #endif // PLAYDESONG_H_INCLUDED
