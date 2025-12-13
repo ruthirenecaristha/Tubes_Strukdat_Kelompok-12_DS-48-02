@@ -374,11 +374,10 @@ void stopSong(){
 }
 
 adrSinger findSingerbyElemSong(listLibrary library, adrSong sg){
-    adrSinger s;
-    adrSinger temp = library.first;
+    adrSinger s = library.first;
     adrSong tempSg;
 
-    while (temp != nullptr){
+    while (s != nullptr){
         tempSg = s->firstSong;
         while (tempSg != nullptr){
             if (tempSg == sg){
@@ -386,7 +385,7 @@ adrSinger findSingerbyElemSong(listLibrary library, adrSong sg){
             }
             tempSg = tempSg->next;
         }
-        temp = temp->next
+        s = s->next;
     }
     return nullptr;
 }
@@ -408,3 +407,22 @@ void nextSong(adrSong &sg, adrSinger s, adrPlaylist pl){
     }
     cout << "Next song: " << sg->info.judul << " by " << sg->info.artis << endl;
 }
+
+void prevSong(adrSong &sg, adrSinger s, adrPlaylist pl){
+    if (pl != nullptr){
+        if (sg->prev != nullptr){
+            sg = sg->prev;
+        } else {
+            cout << "The first song in the playlist will be played." << endl;
+            sg = pl->lastSong;
+        }
+    } else if (s != nullptr){
+        if (sg->prev != nullptr){
+            sg = sg->prev;
+        } else {
+            sg = s->lastSong;
+        }
+    }
+    cout << "Previus song: " << sg->info.judul << " by " << sg->info.artis << endl;
+}
+
