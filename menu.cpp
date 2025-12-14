@@ -16,18 +16,18 @@ void menuUser(){
     cout << "Welcome User. What do you want to do?"<< endl;
     cout << "1. Display Favourite Songs" << endl;
     cout << "2. Display A Playlist" << endl;
-    cout << "3. Display All Song" << endl;
+    cout << "3. Display All Song from Library" << endl;
     cout << "4. Search your Playlist" << endl;
     cout << "5. Search Song" << endl;
     cout << "6. Edit Playlist" << endl;
     cout << "7. Display All Songs from A Singer" << endl;
-    cout << "8. Exit" << endl;
+    cout << "8. View History and Listening Time" << endl;
+    cout << "9. Exit" << endl;
 }
 
 void dummyData(listLibrary &library, daftarPlaylist &playlists){
     adrSinger s;
     adrPlaylist pl;
-    adrSong sg;
 
     s = createElementSinger("Laufey");
     addSingertoLibrary(library, s);
@@ -70,4 +70,32 @@ void dummyData(listLibrary &library, daftarPlaylist &playlists){
     addPlaylist(playlists, pl);
     addSongtoPlaylist(pl, createElementSong("A02", "Let You Break My Heart Again", "Laufey", "Let You Break My Heart Again", 2021, 269, false));
     addSongtoPlaylist(pl, createElementSong("D02", "Say You Won't Let Go", "James Arthur", "Back From the Edge", 2016, 211, false));
+}
+
+void controlMusicPlayer(adrSong sg, adrSinger s, adrPlaylist pl, stackH &history){
+    int choice;
+    bool isPlaying = true;
+
+    playSong(history, sg);
+    while (isPlaying && sg != nullptr){
+        cout << "===== Menu Player =====" << endl;
+        cout << "1. Play Next Song" << endl;
+        cout << "2. Play Previous Song" << endl;
+        cout << "3. Stop & Exit Menu" << endl;
+        cout << "Enter your choice (1-3): ";
+        cin >> choice;
+
+        if (choice == 1){
+            nextSong(sg, s, pl);
+            playSong(history, sg);
+        } else if (choice == 2){
+            prevSong(sg, s, pl);
+            playSong(history, sg);
+        } else if (choice == 3){
+            stopSong();
+            isPlaying = false;
+        } else {
+            cout << "Your choice is not valid." << endl << endl;
+        }
+    }
 }
