@@ -91,9 +91,6 @@ void deletePlaylist(daftarPlaylist &playlists, string kodePL);
 void deleteSongElement(adrPlaylist &pl, adrSong spl);
 void deleteSongLibrary(adrSinger &s, adrSong sg);
 
-void sortSongsinLibrarybyYear(listLibrary &library);
-void sortSongsinPlaylistbyYear(daftarPlaylist &playlists);
-
 void mainMenuAdmin();
 void menuUser();
 
@@ -109,5 +106,7 @@ void nextSong(adrSong &sg, adrSinger s, adrPlaylist pl);
 void prevSong(adrSong &sg, adrSinger s, adrPlaylist pl);
 
 void songFlagStatus(listLibrary &library, daftarPlaylist &playlists, string judul);
+void controlMusicPlayer(adrSong sg, adrSinger s, adrPlaylist pl, stackH &history);
+void dummyData(listLibrary &library, daftarPlaylist &playlists);
 
 #endif // PLAYDESONG_H_INCLUDED
