@@ -297,7 +297,9 @@ void deletePlaylist(daftarPlaylist &playlists, string kodePL){
     adrPlaylist foundPL = searchPlaylist(playlists, kodePL);
     if (foundPL == nullptr){
         cout << "Playlist not found." << endl;
-    } else {
+    } else if (foundPL->info.namaPlaylist == "Fav_Songs"){
+        cout << "You can't delete this playlist." << endl;
+    }else {
         while (foundPL->firstSong !=nullptr){
             adrSong spl = foundPL->firstSong;
             deleteSongElement(foundPL, spl);
@@ -426,3 +428,110 @@ void prevSong(adrSong &sg, adrSinger s, adrPlaylist pl){
     cout << "Previus song: " << sg->info.judul << " by " << sg->info.artis << endl;
 }
 
+void updateSongsfromAll(listLibrary &library, daftarPlaylist &playlists, string judul){
+    int x, newYear, newDuration;
+    string newTitle, newAlbum;
+    adrSong sg = searchSong(library, judul);
+    if (sg == nullptr){
+        cout << "There is no song titled " << judul << " in library." << endl;
+    } else {
+        cout << "Song found." << endl;
+        cout << "Data lama: " << sg->info.judul << " by " << sg->info.artis << endl;
+        cout << "1. Judul Lagu" << endl;
+        cout << "2. Album" << endl;
+        cout << "3. Tahun Rilis" << endl;
+        cout << "4. Durasi" << endl;
+        cout << "Apa yang mau diedit? Pilih (1-4): ";
+        cin >> x;
+
+        switch (x){
+            case 1:{
+                cout << "Masukkan judul baru: ";
+                cin >> newTitle;
+                sg->info.judul = newTitle;
+            }
+            case 2:{
+                cout << "Masukkan album baru: ";
+                cin >> newAlbum;
+                sg->info.album = newAlbum;
+            }
+            case 3:{
+                cout << "Masukkan tahun rilis baru: ";
+                cin >> newYear;
+                sg->info.year = newYear;
+            }
+            case 4:{
+                cout << "Masukkan durasi baru (detik): ";
+                cin >> newDuration;
+                sg->info.durasi = newDuration;
+            }
+            default:{
+                cout << "Your choice isn't valid." << endl;
+                return;
+            }
+        }
+        cout << "The record has been updated successfully." << endl;
+
+        adrPlaylist pl = playlists.first;
+        while (pl != nullptr){
+            adrSong spl = pl->firstSong;
+            while (spl != nullptr){
+                if (spl->info.idLagu == sg->info.idLagu){
+                    if (x == 1){
+                        spl->info.judul = newTitle;
+                    } else if (x == 2){
+                        spl->info.album = newAlbum;
+                    } else if (x == 3){
+                        spl->info.year = newYear;
+                    } else if (x == 4){
+                        spl->info.durasi = newDuration;
+                    }
+                }
+                spl = spl->next;
+            }
+            pl = pl->next;
+        }
+        cout << "All record in user's playlists have been synchronized." << endl;
+    }
+}
+
+void songFlagStatus(listLibrary &library, daftarPlaylist &playlists, string judul){
+    int x;
+    adrSong sg = searchSong(library, judul);
+    if (sg == nullptr){
+        cout << "Song not found." << endl;
+    } else {
+        cout << "Song found." << endl;
+        cout << "1. Favorite Song" << endl;
+        cout << "2. Unfavorite Song" << endl;
+        cout << "Enter your choice (1-2): ";
+        cin >> x;
+        adrPlaylist pFav, p = playlists.first;
+        while (p != nullptr){
+            if (p->info.kodePL == "PLFAV"){
+                pFav = p;
+            }
+            p = p->next;
+        }
+        if (x == 1){
+            sg->info.fav = true;
+            adrSong newsg = createElementSong(sg->info.idLagu, sg->info.judul, sg->info.artis, sg->info.album, sg->info.year, sg->info.durasi, true);
+            addSongtoPlaylist(pFav, newsg);
+        } else if (x == 2){
+            sg->info.fav = false;
+            adrSong sfav = pFav->firstSong, sdel;
+            while (sfav != nullptr){
+                if (sfav->info.idLagu == sg->info.idLagu){
+                    sdel = sfav;
+                }
+                sfav = sfav->next;
+            }
+            if (sdel != nullptr){
+                deleteSongElement(pFav, sdel);
+                cout << "Song has been deleted from your favourite songs list." << endl;
+            } else {
+                cout << "You haven't favourited the song." << endl;
+            }
+        }
+    }
+}
