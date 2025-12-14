@@ -1,4 +1,5 @@
 #include <iostream>
+#include <string>
 #include "playDeSong.h"
 using namespace std;
 
