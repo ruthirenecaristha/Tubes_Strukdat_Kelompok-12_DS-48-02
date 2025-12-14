@@ -86,7 +86,7 @@ void displayLibrary(listLibrary library);
 void displayPlaylist(daftarPlaylist playlists);
 
 void deleteSongsfromAll(listLibrary &library, daftarPlaylist &playlists, string judul, string namaArtis);
-void updateSongsfromAll(listLibrary &library, daftarPlaylist &playlists);
+void updateSongsfromAll(listLibrary &library, daftarPlaylist &playlists, string judul);
 void deletePlaylist(daftarPlaylist &playlists, string kodePL);
 void deleteSongElement(adrPlaylist &pl, adrSong spl);
 void deleteSongLibrary(adrSinger &s, adrSong sg);
@@ -108,5 +108,6 @@ void stopSong();
 void nextSong(adrSong &sg, adrSinger s, adrPlaylist pl);
 void prevSong(adrSong &sg, adrSinger s, adrPlaylist pl);
 
+void songFlagStatus(listLibrary &library, daftarPlaylist &playlists, string judul);
 
 #endif // PLAYDESONG_H_INCLUDED
