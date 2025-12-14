@@ -1,8 +1,11 @@
 Welcome to PlayDeSong app!
 
 Kelas: Struktur Data DS-48-02
+
 Disusun oleh Kelompok 12
+
 Ketua: Ruth Irene Caristha Sihombing (103052400045)
+
 Anggota:
 - Farel Vandin Ardiwinata (103052430001)
 - Annisa Putri Nur Sa'id (103052400032)
