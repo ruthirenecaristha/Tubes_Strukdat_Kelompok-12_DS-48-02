@@ -49,7 +49,9 @@ int main(){
                     getline(cin, nama);
                     s = createElementSinger(nama);
                     addSingertoLibrary(library, s);
-                    cout << s->namaArtis << " has been added to library." << endl;
+                    cout << s->namaArtis << " has been added to library." << endl << endl;
+                    displayLibrary(library);
+                    cout << endl;
                     break; // REVISI: Tambahkan break
                 }
                 // Add Song to Singer List
@@ -73,6 +75,8 @@ int main(){
                         sg = createElementSong(songId, songTitle, nama, songAlbum, songYear, songDur, false);
                         addSongtoSinger(s, sg);
                         cout << "The song has been added to singer list." << endl << endl;
+                        displayAllSongfromASinger(s);
+                        cout << endl;
                     } else {
                         cout << "Singer named " << nama << " is not found." << endl << endl;
                     }
