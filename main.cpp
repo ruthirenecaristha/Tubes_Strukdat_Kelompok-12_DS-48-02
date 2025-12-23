@@ -87,10 +87,11 @@ int main(){
                     cout << "Enter the singer name: ";
                     cin.ignore();
                     getline(cin, nama);
-                    cout << "ENter the song title: ";
+                    cout << "Enter the song title: ";
                     // Hapus cin.ignore disini jika sebelumnya getline, tapi aman pakai ignore jika ragu sisa buffer
                     getline(cin, songTitle);
                     deleteSongsfromAll(library, playlists, songTitle, nama);
+                    displayLibrary(library);
                     break; // REVISI: Tambahkan break
                 }
                 // Update song
@@ -98,7 +99,9 @@ int main(){
                     cout << "Song Title that you want to edit: ";
                     cin.ignore();
                     getline(cin, songTitle);
+                    s = searchSinger(library, (searchSong(library, songTitle)->info.artis));
                     updateSongsfromAll(library, playlists, songTitle);
+                    displayAllSongfromASinger(s);
                     break; // REVISI: Tambahkan break
                 }
                 // Exit
@@ -127,6 +130,7 @@ int main(){
                     adrPlaylist pFav = searchPlaylist(playlists, "PLFAV");
                     if (pFav != nullptr){
                         displayAllSongfromAPlaylist(pFav);
+                        cout << endl;
                     } else {
                         cout << "Error: You don't have any liked songs yet." << endl;
                     }
@@ -165,6 +169,7 @@ int main(){
                 // Display All Songs From Library
                 case 3:{
                     displayLibrary(library);
+                    cout << endl;
                     break; // REVISI
                 }
                 // Search Playlist
@@ -234,6 +239,7 @@ int main(){
                             getline(cin, namaPL);
                             pl = createElementPlaylist(kodePL, namaPL);
                             addPlaylist(playlists, pl);
+                            cout << endl;
                             break;
                         }
                         //Delete Playlist
@@ -241,6 +247,7 @@ int main(){
                             cout << "Enter the code of a playlist you want to delete: ";
                             cin >> kodePL;
                             deletePlaylist(playlists, kodePL);
+                            cout << endl;
                             break;
                         }
                         //Add Song to a New Playlist
@@ -289,6 +296,7 @@ int main(){
                                 if (found) {
                                     deleteSongElement(pl, sg);
                                     cout << "Song deleted." << endl;
+                                    cout << endl;
                                 } else {
                                     cout << "Song not found in this playlist." << endl;
                                 }
@@ -320,12 +328,14 @@ int main(){
                         // Perbaikan akses pointer, s mungkin null di sini
                         cout << "There's no singer named " << nama << endl <<endl;
                     }
+                    cout << endl;
                     break; // REVISI
                 }
                 //View History and Listening Time
                 case 8:{
                     showHistory(history);
                     listeningTime(history);
+                    cout << endl;
                     break; // REVISI
                 }
                 //Exit
