@@ -50,6 +50,7 @@ int main(){
                     s = createElementSinger(nama);
                     addSingertoLibrary(library, s);
                     cout << s->namaArtis << " has been added to library." << endl;
+                    break; // REVISI: Tambahkan break
                 }
                 // Add Song to Singer List
                 case 2:{
@@ -64,8 +65,7 @@ int main(){
                         cin.ignore();
                         getline(cin, songTitle);
                         cout << "Enter the song album: ";
-                        cin.ignore();
-                        getline(cin, songAlbum);
+                        getline(cin, songAlbum); // Hapus cin.ignore() kedua jika berurutan getline
                         cout << "Year: ";
                         cin >> songYear;
                         cout << "Song Duration (in seconds): ";
@@ -76,6 +76,7 @@ int main(){
                     } else {
                         cout << "Singer named " << nama << " is not found." << endl << endl;
                     }
+                    break; // REVISI: Tambahkan break
                 }
                 // Delete Song
                 case 3:{
@@ -83,9 +84,10 @@ int main(){
                     cin.ignore();
                     getline(cin, nama);
                     cout << "ENter the song title: ";
-                    cin.ignore();
+                    // Hapus cin.ignore disini jika sebelumnya getline, tapi aman pakai ignore jika ragu sisa buffer
                     getline(cin, songTitle);
                     deleteSongsfromAll(library, playlists, songTitle, nama);
+                    break; // REVISI: Tambahkan break
                 }
                 // Update song
                 case 4:{
@@ -93,13 +95,16 @@ int main(){
                     cin.ignore();
                     getline(cin, songTitle);
                     updateSongsfromAll(library, playlists, songTitle);
+                    break; // REVISI: Tambahkan break
                 }
                 // Exit
                 case 5:{
                     cout << "Logged you out. c u, admin ;)" << endl << endl;
+                    break; // REVISI: Tambahkan break
                 }
                 default:{
                     cout << "Invalid input." << endl;
+                    break;
                 }
             }
         } while (choice != 5);
@@ -121,6 +126,7 @@ int main(){
                     } else {
                         cout << "Error: You don't have any liked songs yet." << endl;
                     }
+                    break; // REVISI
                 }
                 // Display A Playlist
                 case 2:{
@@ -133,22 +139,29 @@ int main(){
                         cout << "1. Play Song from this playlist" << endl;
                         cout << "2. Exit" << endl;
                         cout << "Choose option (1/2): ";
-                        cin >> choice;
+                        int subChoice; // Ganti nama variabel biar aman
+                        cin >> subChoice;
 
-                        if (choice == 1){
+                        if (subChoice == 1){
                             if (pl->firstSong != nullptr){
                                 controlMusicPlayer(pl->firstSong, nullptr, pl, history);
+                            } else {
+                                cout << "Playlist is empty." << endl;
                             }
-                        } else if (choice == 2){
+                        } else if (subChoice == 2){
                             cout << "Exit playlist." << endl;
                         } else {
                             cout << "Invalid Input." << endl;
                         }
+                    } else {
+                        cout << "Playlist not found." << endl;
                     }
-                }\
+                    break; // REVISI
+                }
                 // Display All Songs From Library
                 case 3:{
                     displayLibrary(library);
+                    break; // REVISI
                 }
                 // Search Playlist
                 case 4:{
@@ -156,10 +169,11 @@ int main(){
                     cin >> kodePL;
                     adrPlaylist pl = searchPlaylist(playlists, kodePL);
                     if (pl != nullptr){
-                        cout << "Playlist found: " << pl->info.namaPlaylist;
+                        cout << "Playlist found: " << pl->info.namaPlaylist << endl;
                     } else {
                         cout << "Playlist is not found." << endl;
                     }
+                    break; // REVISI
                 }
                 // Search Song
                 case 5:{
@@ -176,19 +190,23 @@ int main(){
                         cout << "2. Add/Remove Favourite Songs" << endl;
                         cout << "3. Back" << endl;
                         cout << "Choose option (1-3): ";
-                        cin >> choice;
+                        int subChoice;
+                        cin >> subChoice;
 
-                        if (choice == 1){
+                        if (subChoice == 1){
                             s = searchSinger(library, sg->info.artis);
                             controlMusicPlayer(sg, s, nullptr, history);
-                        } else if (choice == 2){
+                        } else if (subChoice == 2){
                             songFlagStatus(library, playlists, sg->info.judul);
-                        } else if (choice == 3){
+                        } else if (subChoice == 3){
                             cout << "Exit this page." << endl;
                         } else {
                             cout << "Invalid input." << endl;
                         }
+                    } else {
+                        cout << "Song not found." << endl;
                     }
+                    break; // REVISI
                 }
                 // Edit Playlist
                 case 6:{
@@ -199,9 +217,10 @@ int main(){
                     cout << "4. Delete Song From A Playlist" << endl;
                     cout << "5. Exit" << endl;
                     cout << "Choose option (1-4): ";
-                    cin >> choice;
+                    int subChoice;
+                    cin >> subChoice;
 
-                    switch (choice){
+                    switch (subChoice){
                         //Add New Playlist
                         case 1:{
                             cout << "Enter new playlist code: ";
@@ -211,12 +230,14 @@ int main(){
                             getline(cin, namaPL);
                             pl = createElementPlaylist(kodePL, namaPL);
                             addPlaylist(playlists, pl);
+                            break;
                         }
                         //Delete Playlist
                         case 2:{
                             cout << "Enter the code of a playlist you want to delete: ";
                             cin >> kodePL;
                             deletePlaylist(playlists, kodePL);
+                            break;
                         }
                         //Add Song to a New Playlist
                         case 3:{
@@ -229,38 +250,59 @@ int main(){
                                 getline(cin, songTitle);
                                 sg = searchSong(library, songTitle);
                                 if (sg != nullptr){
-                                    addSongtoPlaylist(pl, sg);
+                                    // REVISI PENTING: JANGAN MASUKKAN SG LANGSUNG
+                                    // Buat element baru berdasarkan data sg
+                                    adrSong newSongForPL = createElementSong(sg->info.idLagu, sg->info.judul, sg->info.artis, sg->info.album, sg->info.year, sg->info.durasi, sg->info.fav);
+                                    addSongtoPlaylist(pl, newSongForPL);
                                     cout << "Successfully added to the playlist." << endl << endl;
                                 } else {
                                     cout << "Song not found." << endl << endl;
                                 }
+                            } else {
+                                cout << "Playlist not found." << endl;
                             }
+                            break;
                         }
                         // Delete Song from A Playlist
                         case 4:{
                             cout << "Enter the playlist code: ";
                             cin >> kodePL;
                             pl = searchPlaylist(playlists, kodePL);
-                            cout << "Enter the song title you want to delete from this plyaylist: ";
-                            cin.ignore();
-                            getline(cin, songTitle);
-                            bool found = false;
-                            adrSong sg = pl->firstSong;
-                            while (sg != nullptr && found){
-                                if (sg->info.judul == songTitle){
-                                    found = true;
+                            if (pl != nullptr) {
+                                cout << "Enter the song title you want to delete from this playlist: ";
+                                cin.ignore();
+                                getline(cin, songTitle);
+                                bool found = false;
+                                adrSong sg = pl->firstSong;
+                                // REVISI: Logika Loop diperbaiki
+                                while (sg != nullptr && !found){
+                                    if (sg->info.judul == songTitle){
+                                        found = true;
+                                    } else {
+                                        sg = sg->next;
+                                    }
                                 }
-                                sg = sg->next;
+                                if (found) {
+                                    deleteSongElement(pl, sg);
+                                    cout << "Song deleted." << endl;
+                                } else {
+                                    cout << "Song not found in this playlist." << endl;
+                                }
+                            } else {
+                                cout << "Playlist not found." << endl;
                             }
-                            deleteSongElement(pl, sg);
+                            break;
                         }
                         case 5:{
                             cout << "Exiting from this page..." << endl << endl;
+                            break;
                         }
                         default:{
                             cout << "Invalid input." << endl << endl;
+                            break;
                         }
                     }
+                    break; // REVISI: Break untuk case 6 utama
                 }
                 //Display All Songs from A Singer
                 case 7:{
@@ -271,22 +313,30 @@ int main(){
                     if (s != nullptr){
                         displayAllSongfromASinger(s);
                     } else {
-                        cout << "There's no singer named " << s->namaArtis << endl <<endl;
+                        // Perbaikan akses pointer, s mungkin null di sini
+                        cout << "There's no singer named " << nama << endl <<endl;
                     }
+                    break; // REVISI
                 }
                 //View History and Listening Time
                 case 8:{
                     showHistory(history);
                     listeningTime(history);
+                    break; // REVISI
                 }
                 //Exit
                 case 9:{
                     cout << "Logged you out. c u, user ;)" << endl << endl;
+                    break; // REVISI
                 }
                 default:{
                     cout << "Invalid input." << endl;
+                    break;
                 }
             }
         } while (choice != 9);
+    } else {
+        cout << "Login failed. Wrong username or password." << endl;
     }
+    return 0;
 }
