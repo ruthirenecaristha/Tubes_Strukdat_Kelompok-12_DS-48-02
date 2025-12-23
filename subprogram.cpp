@@ -3,6 +3,10 @@
 #include "playDeSong.h"
 using namespace std;
 
+// ... [BAGIAN CREATE DAN ADD TIDAK BERUBAH DARI FILE ASLI] ...
+// ... Copy paste fungsi create/add/isempty dari file asli Anda di sini ...
+// Agar jawaban tidak terlalu panjang, saya tampilkan bagian yang direvisi saja.
+
 void createNewPlaylist(daftarPlaylist &playlists){
     playlists.first = nullptr;
     playlists.last = nullptr;
@@ -57,7 +61,6 @@ bool isEmptyPlaylist(daftarPlaylist playlists){
 }
 
 void addSingertoLibrary(listLibrary &library, adrSinger s){
-//I.S Ada kemungkinan list kosong (perlu insertFirst). Jika list tidak kosong, data dimasukkan paling akhir//
     if (isEmptyLibrary(library)){
         library.first = s;
         library.last = s;
@@ -69,7 +72,6 @@ void addSingertoLibrary(listLibrary &library, adrSinger s){
 }
 
 void addPlaylist(daftarPlaylist &playlists, adrPlaylist pl){
-//I.S Ada kemungkinan list kosong (perlu insertFirst). Jika list tidak kosong, data dimasukkan paling akhir//
     if (isEmptyPlaylist(playlists)){
         playlists.first = pl;
         playlists.last = pl;
@@ -222,6 +224,7 @@ void displayPlaylist(daftarPlaylist playlists){
     }
 }
 
+// === REVISI PENTING DI SINI ===
 void deleteSongsfromAll(listLibrary &library, daftarPlaylist &playlists, string judul, string namaArtis){
     adrSinger s = searchSinger(library, namaArtis);
     if (s == nullptr){
@@ -229,22 +232,25 @@ void deleteSongsfromAll(listLibrary &library, daftarPlaylist &playlists, string 
     } else {
         adrSong sg = s->firstSong;
         bool found = false;
-        while (!found){
+        // REVISI: Tambahkan pengecekan sg != nullptr
+        while (sg != nullptr && !found){
             if (sg->info.judul == judul){
                 found = true;
+            } else {
+                sg = sg->next;
             }
-            sg = sg->next;
         }
 
         if (!found){
             cout << "Lagu tidak ditemukan." << endl;
         } else {
             string iDsong = sg->info.idLagu;
+            // Hapus dari semua playlist dulu
             adrPlaylist pl = playlists.first;
             while (pl != nullptr){
                 adrSong spl = pl->firstSong;
                 while (spl != nullptr){
-                    adrSong temp = spl->next;
+                    adrSong temp = spl->next; // Simpan next karena spl akan didelete
                     if (spl->info.idLagu == iDsong){
                         deleteSongElement(pl, spl);
                     }
@@ -252,6 +258,7 @@ void deleteSongsfromAll(listLibrary &library, daftarPlaylist &playlists, string 
                 }
                 pl = pl->next;
             }
+            // Terakhir hapus dari library
             deleteSongLibrary(s, sg);
             cout << "Lagu " << judul << " berhasil dihapus dari Library dan seluruh Playlist." << endl;
         }
@@ -261,38 +268,51 @@ void deleteSongsfromAll(listLibrary &library, daftarPlaylist &playlists, string 
 void deleteSongElement(adrPlaylist &pl, adrSong spl){
     adrSong first = pl->firstSong;
     adrSong last = pl->lastSong;
-    if (spl == first){
-        first = first->next;
-        first->prev = nullptr;
-    } else if (spl == last){
-        last = last->prev;
-        last->next = nullptr;
-    } else if (spl == first && spl == last){
-        first = nullptr;
-        last = nullptr;
-    } else {
+
+    // Handle single element
+    if (spl == first && spl == last){
+        pl->firstSong = nullptr;
+        pl->lastSong = nullptr;
+    }
+    // Handle first element
+    else if (spl == first){
+        pl->firstSong = first->next;
+        pl->firstSong->prev = nullptr;
+    }
+    // Handle last element
+    else if (spl == last){
+        pl->lastSong = last->prev;
+        pl->lastSong->next = nullptr;
+    }
+    // Handle middle element
+    else {
         spl->prev->next = spl->next;
         spl->next->prev = spl->prev;
     }
+    // Optional: delete spl; (memory management)
 }
 
 void deleteSongLibrary(adrSinger &s, adrSong sg){
     adrSong first = s->firstSong;
     adrSong last = s->lastSong;
-    if (sg == first){
-        first = first->next;
-        first->prev = nullptr;
+
+    if (sg == first && sg == last){
+        s->firstSong = nullptr;
+        s->lastSong = nullptr;
+    } else if (sg == first){
+        s->firstSong = first->next;
+        s->firstSong->prev = nullptr;
     } else if (sg == last){
-        last = last->prev;
-        last->next = nullptr;
-    } else if (sg == first && sg == last){
-        first = nullptr;
-        last = nullptr;
+        s->lastSong = last->prev;
+        s->lastSong->next = nullptr;
     } else {
         sg->prev->next = sg->next;
         sg->next->prev = sg->prev;
     }
 }
+// ... [SISA FUNGSI DI BAWAHNYA SAMA SEPERTI ASLI] ...
+// Pastikan fungsi deletePlaylist, Stack, PlaySong, dll tetap ada
+// Saya sertakan kembali fungsi deletePlaylist untuk kelengkapan
 
 void deletePlaylist(daftarPlaylist &playlists, string kodePL){
     adrPlaylist foundPL = searchPlaylist(playlists, kodePL);
@@ -448,23 +468,29 @@ void updateSongsfromAll(listLibrary &library, daftarPlaylist &playlists, string 
         switch (x){
             case 1:{
                 cout << "Masukkan judul baru: ";
-                cin >> newTitle;
+                cin.ignore(); // Tambahkan ignore
+                getline(cin, newTitle);
                 sg->info.judul = newTitle;
+                break; // Tambahkan break
             }
             case 2:{
                 cout << "Masukkan album baru: ";
-                cin >> newAlbum;
+                cin.ignore();
+                getline(cin, newAlbum);
                 sg->info.album = newAlbum;
+                break;
             }
             case 3:{
                 cout << "Masukkan tahun rilis baru: ";
                 cin >> newYear;
                 sg->info.year = newYear;
+                break;
             }
             case 4:{
                 cout << "Masukkan durasi baru (detik): ";
                 cin >> newDuration;
                 sg->info.durasi = newDuration;
+                break;
             }
             default:{
                 cout << "Your choice isn't valid." << endl;
@@ -507,20 +533,26 @@ void songFlagStatus(listLibrary &library, daftarPlaylist &playlists, string judu
         cout << "2. Unfavorite Song" << endl;
         cout << "Enter your choice (1-2): ";
         cin >> x;
-        adrPlaylist pFav, p = playlists.first;
+        adrPlaylist pFav = nullptr, p = playlists.first; // init pFav nullptr
         while (p != nullptr){
             if (p->info.kodePL == "PLFAV"){
                 pFav = p;
             }
             p = p->next;
         }
+
+        if (pFav == nullptr) {
+             cout << "Error: Favorites playlist not found." << endl;
+             return;
+        }
+
         if (x == 1){
             sg->info.fav = true;
             adrSong newsg = createElementSong(sg->info.idLagu, sg->info.judul, sg->info.artis, sg->info.album, sg->info.year, sg->info.durasi, true);
             addSongtoPlaylist(pFav, newsg);
         } else if (x == 2){
             sg->info.fav = false;
-            adrSong sfav = pFav->firstSong, sdel;
+            adrSong sfav = pFav->firstSong, sdel = nullptr; // Init sdel
             while (sfav != nullptr){
                 if (sfav->info.idLagu == sg->info.idLagu){
                     sdel = sfav;
