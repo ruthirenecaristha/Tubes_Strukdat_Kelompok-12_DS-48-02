@@ -3,10 +3,6 @@
 #include "playDeSong.h"
 using namespace std;
 
-// ... [BAGIAN CREATE DAN ADD TIDAK BERUBAH DARI FILE ASLI] ...
-// ... Copy paste fungsi create/add/isempty dari file asli Anda di sini ...
-// Agar jawaban tidak terlalu panjang, saya tampilkan bagian yang direvisi saja.
-
 void createNewPlaylist(daftarPlaylist &playlists){
     playlists.first = nullptr;
     playlists.last = nullptr;
@@ -155,6 +151,7 @@ adrSong searchSong(listLibrary library, string judul){
 
 void displayAllSongfromASinger(adrSinger s){
     adrSong sg = s->firstSong;
+    cout << "---------------------------------------------" << endl;
     cout << "Songs list by: " << s->namaArtis << endl;
     if (sg != nullptr){
         while (sg != nullptr){
@@ -168,6 +165,7 @@ void displayAllSongfromASinger(adrSinger s){
             } else {
                 cout << "Lagu tidak berada di dalam list lagu favorit." << endl;
             }
+            cout << endl;
             sg = sg->next;
         }
     } else {
@@ -177,6 +175,7 @@ void displayAllSongfromASinger(adrSinger s){
 
 void displayAllSongfromAPlaylist(adrPlaylist pl){
     adrSong sg = pl->firstSong;
+    cout << "---------------------------------------------" << endl;
     cout << "Lagu dalam playlist " << pl->info.namaPlaylist << endl;
     if (sg != nullptr){
         while (sg != nullptr){
@@ -191,6 +190,7 @@ void displayAllSongfromAPlaylist(adrPlaylist pl){
             } else {
                 cout << "Lagu tidak berada di dalam list lagu favorit." << endl;
             }
+            cout << endl;
             sg = sg->next;
         }
     } else {
@@ -224,7 +224,6 @@ void displayPlaylist(daftarPlaylist playlists){
     }
 }
 
-// === REVISI PENTING DI SINI ===
 void deleteSongsfromAll(listLibrary &library, daftarPlaylist &playlists, string judul, string namaArtis){
     adrSinger s = searchSinger(library, namaArtis);
     if (s == nullptr){
@@ -232,7 +231,6 @@ void deleteSongsfromAll(listLibrary &library, daftarPlaylist &playlists, string 
     } else {
         adrSong sg = s->firstSong;
         bool found = false;
-        // REVISI: Tambahkan pengecekan sg != nullptr
         while (sg != nullptr && !found){
             if (sg->info.judul == judul){
                 found = true;
@@ -289,7 +287,6 @@ void deleteSongElement(adrPlaylist &pl, adrSong spl){
         spl->prev->next = spl->next;
         spl->next->prev = spl->prev;
     }
-    // Optional: delete spl; (memory management)
 }
 
 void deleteSongLibrary(adrSinger &s, adrSong sg){
@@ -310,9 +307,6 @@ void deleteSongLibrary(adrSinger &s, adrSong sg){
         sg->next->prev = sg->prev;
     }
 }
-// ... [SISA FUNGSI DI BAWAHNYA SAMA SEPERTI ASLI] ...
-// Pastikan fungsi deletePlaylist, Stack, PlaySong, dll tetap ada
-// Saya sertakan kembali fungsi deletePlaylist untuk kelengkapan
 
 void deletePlaylist(daftarPlaylist &playlists, string kodePL){
     adrPlaylist foundPL = searchPlaylist(playlists, kodePL);
