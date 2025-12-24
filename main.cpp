@@ -136,34 +136,10 @@ int main(){
                     }
                     break; // REVISI
                 }
-                // Display A Playlist
+                // Display All Playlist
                 case 2:{
-                    cout << "Enter a playlist code: ";
-                    cin >> kodePL;
-                    adrPlaylist pl = searchPlaylist(playlists, kodePL);
-                    if (pl != nullptr){
-                        displayAllSongfromAPlaylist(pl);
-                        cout << "--- OPTION ---" << endl;
-                        cout << "1. Play Song from this playlist" << endl;
-                        cout << "2. Exit" << endl;
-                        cout << "Choose option (1/2): ";
-                        int subChoice; // Ganti nama variabel biar aman
-                        cin >> subChoice;
-
-                        if (subChoice == 1){
-                            if (pl->firstSong != nullptr){
-                                controlMusicPlayer(pl->firstSong, nullptr, pl, history);
-                            } else {
-                                cout << "Playlist is empty." << endl;
-                            }
-                        } else if (subChoice == 2){
-                            cout << "Exit playlist." << endl;
-                        } else {
-                            cout << "Invalid Input." << endl;
-                        }
-                    } else {
-                        cout << "Playlist not found." << endl;
-                    }
+                    displayPlaylist(playlists);
+                    cout << endl;
                     break; // REVISI
                 }
                 // Display All Songs From Library
@@ -179,6 +155,7 @@ int main(){
                     adrPlaylist pl = searchPlaylist(playlists, kodePL);
                     if (pl != nullptr){
                         cout << "Playlist found: " << pl->info.namaPlaylist << endl;
+                        displayAllSongfromAPlaylist(pl);
                     } else {
                         cout << "Playlist is not found." << endl;
                     }
