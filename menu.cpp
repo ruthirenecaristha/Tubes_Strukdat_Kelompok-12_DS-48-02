@@ -66,10 +66,48 @@ void dummyData(listLibrary &library, daftarPlaylist &playlists){
     addSongtoSinger(s, createElementSong("E01", "Into You", "Ariana Grande", "Dangerous Woman", 2016, 244, false));
     addSongtoSinger(s, createElementSong("E02", "Bloodline", "Ariana Grande", "thank u, next", 2019, 217, false));
 
+    s = createElementSinger("Taylor Swift");
+    addSingertoLibrary(library, s);
+    addSongtoSinger(s, createElementSong("TS01", "Love Story", "Taylor Swift", "Fearless", 2008, 235, false));
+    addSongtoSinger(s, createElementSong("TS02", "Blank Space", "Taylor Swift", "1989", 2014, 231, false));
+    addSongtoSinger(s, createElementSong("TS03", "Anti-Hero", "Taylor Swift", "Midnights", 2022, 200, false));
+    addSongtoSinger(s, createElementSong("TS04", "Cruel Summer", "Taylor Swift", "Lover", 2019, 178, false));
+    addSongtoSinger(s, createElementSong("TS05", "Style", "Taylor Swift", "1989", 2014, 231, false));
+
+    s = createElementSinger("Queen");
+    addSingertoLibrary(library, s);
+    addSongtoSinger(s, createElementSong("QN01", "Bohemian Rhapsody", "Queen", "A Night at the Opera", 1975, 354, false));
+    addSongtoSinger(s, createElementSong("QN02", "Don't Stop Me Now", "Queen", "Jazz", 1978, 209, false));
+    addSongtoSinger(s, createElementSong("QN03", "We Will Rock You", "Queen", "News of the World", 1977, 121, false));
+    addSongtoSinger(s, createElementSong("QN04", "Radio Ga Ga", "Queen", "The Works", 1984, 343, false));
+    addSongtoSinger(s, createElementSong("QN05", "Another One Bites the Dust", "Queen", "The Game", 1980, 215, false));
+
+    s = createElementSinger("Tulus");
+    addSingertoLibrary(library, s);
+    addSongtoSinger(s, createElementSong("TL01", "Hati-Hati di Jalan", "Tulus", "Manusia", 2022, 242, false));
+    addSongtoSinger(s, createElementSong("TL02", "Sepatu", "Tulus", "Gajah", 2014, 230, false));
+    addSongtoSinger(s, createElementSong("TL03", "Monokrom", "Tulus", "Monokrom", 2016, 214, false));
+    addSongtoSinger(s, createElementSong("TL04", "Gajah", "Tulus", "Gajah", 2014, 240, false));
+    addSongtoSinger(s, createElementSong("TL05", "Interaksi", "Tulus", "Manusia", 2022, 170, false));
+
     pl = createElementPlaylist("PL001", "Sad Songs to Cry in mi Room");
     addPlaylist(playlists, pl);
     addSongtoPlaylist(pl, createElementSong("A02", "Let You Break My Heart Again", "Laufey", "Let You Break My Heart Again", 2021, 269, false));
     addSongtoPlaylist(pl, createElementSong("D02", "Say You Won't Let Go", "James Arthur", "Back From the Edge", 2016, 211, false));
+
+    pl = createElementPlaylist("PL002", "Morning Coffee");
+    addPlaylist(playlists, pl);
+    addSongtoPlaylist(pl, createElementSong("TL03", "Monokrom", "Tulus", "Monokrom", 2016, 214, false));
+    addSongtoPlaylist(pl, createElementSong("TS01", "Love Story", "Taylor Swift", "Fearless", 2008, 235, false));
+    addSongtoPlaylist(pl, createElementSong("TL02", "Sepatu", "Tulus", "Gajah", 2014, 230, false));
+    addSongtoPlaylist(pl, createElementSong("TS05", "Style", "Taylor Swift", "1989", 2014, 231, false));
+
+    pl = createElementPlaylist("PL003", "Funk the beat");
+    addPlaylist(playlists, pl);
+    addSongtoPlaylist(pl, createElementSong("QN02", "Don't Stop Me Now", "Queen", "Jazz", 1978, 209, false));
+    addSongtoPlaylist(pl, createElementSong("TS04", "Cruel Summer", "Taylor Swift", "Lover", 2019, 178, false));
+    addSongtoPlaylist(pl, createElementSong("QN05", "Another One Bites the Dust", "Queen", "The Game", 1980, 215, false));
+    addSongtoPlaylist(pl, createElementSong("TS02", "Blank Space", "Taylor Swift", "1989", 2014, 231, false));
 }
 
 void controlMusicPlayer(adrSong sg, adrSinger s, adrPlaylist pl, stackH &history){
