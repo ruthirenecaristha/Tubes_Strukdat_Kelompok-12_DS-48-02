@@ -15,7 +15,7 @@ void mainMenuAdmin(){
 void menuUser(){
     cout << "Welcome User. What do you want to do?"<< endl;
     cout << "1. Display Favourite Songs" << endl;
-    cout << "2. Display A Playlist" << endl;
+    cout << "2. Display All Playlist" << endl;
     cout << "3. Display All Song from Library" << endl;
     cout << "4. Search your Playlist" << endl;
     cout << "5. Search Song" << endl;
